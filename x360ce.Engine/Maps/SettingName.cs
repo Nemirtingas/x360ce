@@ -81,21 +81,6 @@ namespace x360ce.Engine
 		[DefaultValue("0x45E"), Description("FakeVID. Works in conjunction with HOOKPIDVID.")]
 		static public string FakeVID { get { return "FakeVID"; } }
 
-
-		// [Mappings] section.
-		[DefaultValue(""), Description("Configuration name of the section which is mapped to PAD1.")]
-		static public string PAD1 { get { return "PAD1"; } }
-
-		[DefaultValue(""), Description("Configuration name of the section which is mapped to PAD2.")]
-		static public string PAD2 { get { return "PAD2"; } }
-
-		[DefaultValue(""), Description("Configuration name of the section which is mapped to PAD3.")]
-		static public string PAD3 { get { return "PAD3"; } }
-
-		[DefaultValue(""), Description("Configuration name of the section which is mapped to PAD4.")]
-		static public string PAD4 { get { return "PAD4"; } }
-
-
 		// [PAD] section.
 		[DefaultValue("Unknown Device"), Description("Device product name.")]
 		static public string ProductName { get { return "ProductName"; } }
@@ -374,7 +359,13 @@ namespace x360ce.Engine
 		public static int GetPadIndex(string path)
 		{
 			var section = path.Split('\\')[0];
-			var pads = new List<string>() { PAD1, PAD2, PAD3, PAD4 };
+			var pads = new List<string>();
+
+			for(int i = 0; i < 16; ++i)
+            {
+				pads.Add($"PAD{i}");
+            }
+
 			return pads.IndexOf(section);
 		}
 

@@ -83,10 +83,15 @@ namespace x360ce.App
 			Controls.OfType<ToolStrip>().ToList().ForEach(x => x.Font = Font);
 			GameToCustomizeComboBox.Font = Font;
 			_ResumeTimer.Elapsed += _ResumeTimer_Elapsed;
-			Pad1TabPage.Text = "Controller 1";
-			Pad2TabPage.Text = "Controller 2";
-			Pad3TabPage.Text = "Controller 3";
-			Pad4TabPage.Text = "Controller 4";
+
+			for (int i = 0; i < EngineHelper.GamepadMaxCount; ++i)
+            {
+				TabPage tab = new TabPage();
+				tab.Text = $"Controller {i}";
+				PadTabPages.Add(tab);
+				MainTabControl.Controls.Add(tab);
+			}
+
 			InitMinimize();
 			InitiInterfaceUpdate();
 			GamesToolStrip_Resize(null, null);
@@ -105,7 +110,7 @@ namespace x360ce.App
 		{
 			var currentGameFileName = SettingsManager.CurrentGame?.FileName;
 			var client = Nefarius.ViGEm.Client.ViGEmClient.Current;
-			for (var i = 0; i < 4; i++)
+			for (var i = 0; i < EngineHelper.GamepadMaxCount; i++)
 			{
 				var padControl = PadControls[i];
 				// Get devices mapped to game and specific controller index.
@@ -156,7 +161,7 @@ namespace x360ce.App
 
 		public static MainForm Current { get; set; }
 
-		List<TabPage> PadTabPages => new List<TabPage> { Pad1TabPage, Pad2TabPage, Pad3TabPage, Pad4TabPage };
+		List<TabPage> PadTabPages = new List<TabPage>();
 
 		public int ControllerIndex => PadTabPages.IndexOf(MainTabControl.SelectedTab);
 
@@ -269,7 +274,7 @@ namespace x360ce.App
 				{
 					if (PadControls != null)
 					{
-						for (var i = 0; i < 4; i++)
+						for (var i = 0; i < EngineHelper.GamepadMaxCount; i++)
 						{
 
 							var currentPadControl = PadControls[i];
@@ -381,7 +386,7 @@ namespace x360ce.App
 				if (newDevice == null)
 					break;
 				// Create new setting for game/device.
-				var newSetting = AppHelper.GetNewSetting(newDevice, game, i <= 4 ? (MapTo)i : MapTo.Disabled);
+				var newSetting = AppHelper.GetNewSetting(newDevice, game, i <= EngineHelper.GamepadMaxCount ? (MapTo)i : MapTo.Disabled);
 				newSettingsToProcess.Add(newSetting);
 				// Add device to known list.
 				knownDevices.Add(newDevice.InstanceGuid);
@@ -530,7 +535,7 @@ namespace x360ce.App
 				UpdateTimer.Stop();
 			lock (Controller.XInputLock)
 			{
-				for (var i = 0; i < 4; i++)
+				for (var i = 0; i < EngineHelper.GamepadMaxCount; i++)
 				{
 					if (PadControls[i].LeftMotorTestTrackBar.Value > 0 || PadControls[i].RightMotorTestTrackBar.Value > 0)
 					{
@@ -700,11 +705,12 @@ namespace x360ce.App
 			StatusSaveLabel.Visible = false;
 			StatusEventsLabel.Visible = false;
 			// Load Tab pages.
-			ControlPages = new TabPage[4];
-			ControlPages[0] = Pad1TabPage;
-			ControlPages[1] = Pad2TabPage;
-			ControlPages[2] = Pad3TabPage;
-			ControlPages[3] = Pad4TabPage;
+			ControlPages = new TabPage[PadTabPages.Count];
+			for(int i = 0; i < PadTabPages.Count; ++i)
+            {
+				ControlPages[i] = PadTabPages[i];
+			}
+			
 			//BuletImageList.Images.Add("bullet_square_glass_blue.png", new Bitmap(Helper.GetResource("Images.bullet_square_glass_blue.png")));
 			//BuletImageList.Images.Add("bullet_square_glass_green.png", new Bitmap(Helper.GetResource("Images.bullet_square_glass_green.png")));
 			//BuletImageList.Images.Add("bullet_square_glass_grey.png", new Bitmap(Helper.GetResource("Images.bullet_square_glass_grey.png")));
@@ -734,7 +740,7 @@ namespace x360ce.App
 			// Update settings manager with [Options] section.
 			UpdateSettingsMap();
 			// Load PAD controls.
-			PadControls = new PadControl[4];
+			PadControls = new PadControl[EngineHelper.GamepadMaxCount];
 			for (var i = 0; i < PadControls.Length; i++)
 			{
 				var mapTo = (MapTo)(i + 1);
@@ -747,10 +753,12 @@ namespace x360ce.App
 				PadControls[i].InitPadControl();
 				// Update settings manager with [Mappings] section.
 			}
-			SettingsManager.AddMap(SettingsManager.MappingsSection, () => SettingName.PAD1, PadControls[0].MappedDevicesDataGridView);
-			SettingsManager.AddMap(SettingsManager.MappingsSection, () => SettingName.PAD2, PadControls[1].MappedDevicesDataGridView);
-			SettingsManager.AddMap(SettingsManager.MappingsSection, () => SettingName.PAD3, PadControls[2].MappedDevicesDataGridView);
-			SettingsManager.AddMap(SettingsManager.MappingsSection, () => SettingName.PAD4, PadControls[3].MappedDevicesDataGridView);
+
+			for (int i = 0; i < EngineHelper.GamepadMaxCount; ++i)
+			{
+				SettingsManager.AddMap(SettingsManager.MappingsSection, $"PAD{i}", $"Configuration name of the section which is mapped to PAD{i}", "", PadControls[0].MappedDevicesDataGridView);
+			}
+			
 			// Update settings manager with [PAD1], [PAD2], [PAD3], [PAD4] sections.
 			// Note: There must be no such sections in new config.
 			for (var i = 0; i < PadControls.Length; i++)

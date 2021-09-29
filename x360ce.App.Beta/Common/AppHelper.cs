@@ -325,19 +325,10 @@ namespace x360ce.App
 
 		public static MapToMask GetMapFlag(MapTo mapTo)
 		{
-			switch (mapTo)
-			{
-				case MapTo.Controller1:
-					return MapToMask.Controller1;
-				case MapTo.Controller2:
-					return MapToMask.Controller2;
-				case MapTo.Controller3:
-					return MapToMask.Controller3;
-				case MapTo.Controller4:
-					return MapToMask.Controller4;
-				default:
-					return MapToMask.None;
-			}
+			if ((int)mapTo < 1 || (int)mapTo > EngineHelper.GamepadMaxCount)
+				return MapToMask.None;
+
+			return (MapToMask)(1 << ((int)mapTo - 1));
 		}
 
 		#region HID Guardian

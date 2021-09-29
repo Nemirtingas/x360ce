@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using x360ce.Engine;
 
 namespace x360ce.App.DInput
 {
@@ -14,7 +15,7 @@ namespace x360ce.App.DInput
 
 		void CombineXiStates()
 		{
-			for (int m = 0; m < 4; m++)
+			for (int m = 0; m < EngineHelper.GamepadMaxCount; m++)
 			{
 				// Get all mapped devices.
 				// Convert to array to make sure that states are not modified during selection and exception won't be thrown.

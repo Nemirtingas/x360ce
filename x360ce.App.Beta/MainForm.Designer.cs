@@ -21,10 +21,6 @@ namespace x360ce.App
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.MainTabControl = new System.Windows.Forms.TabControl();
-			this.Pad1TabPage = new System.Windows.Forms.TabPage();
-			this.Pad2TabPage = new System.Windows.Forms.TabPage();
-			this.Pad3TabPage = new System.Windows.Forms.TabPage();
-			this.Pad4TabPage = new System.Windows.Forms.TabPage();
 			this.OptionsTabPage = new System.Windows.Forms.TabPage();
 			this.OptionsPanel = new x360ce.App.Controls.OptionsUserControl();
 			this.GamesTabPage = new System.Windows.Forms.TabPage();
@@ -91,10 +87,6 @@ namespace x360ce.App
 			// 
 			// MainTabControl
 			// 
-			this.MainTabControl.Controls.Add(this.Pad1TabPage);
-			this.MainTabControl.Controls.Add(this.Pad2TabPage);
-			this.MainTabControl.Controls.Add(this.Pad3TabPage);
-			this.MainTabControl.Controls.Add(this.Pad4TabPage);
 			this.MainTabControl.Controls.Add(this.OptionsTabPage);
 			this.MainTabControl.Controls.Add(this.GamesTabPage);
 			this.MainTabControl.Controls.Add(this.ProgramsTabPage);
@@ -111,42 +103,6 @@ namespace x360ce.App
 			this.MainTabControl.SelectedIndex = 0;
 			this.MainTabControl.Size = new System.Drawing.Size(798, 620);
 			this.MainTabControl.TabIndex = 1;
-			// 
-			// Pad1TabPage
-			// 
-			this.Pad1TabPage.ImageKey = "bullet_square_glass_grey.png";
-			this.Pad1TabPage.Location = new System.Drawing.Point(4, 23);
-			this.Pad1TabPage.Name = "Pad1TabPage";
-			this.Pad1TabPage.Size = new System.Drawing.Size(790, 593);
-			this.Pad1TabPage.TabIndex = 0;
-			this.Pad1TabPage.Text = "PAD 1";
-			// 
-			// Pad2TabPage
-			// 
-			this.Pad2TabPage.ImageKey = "bullet_square_glass_grey.png";
-			this.Pad2TabPage.Location = new System.Drawing.Point(4, 23);
-			this.Pad2TabPage.Name = "Pad2TabPage";
-			this.Pad2TabPage.Size = new System.Drawing.Size(790, 593);
-			this.Pad2TabPage.TabIndex = 0;
-			this.Pad2TabPage.Text = "PAD 2";
-			// 
-			// Pad3TabPage
-			// 
-			this.Pad3TabPage.ImageKey = "bullet_square_glass_grey.png";
-			this.Pad3TabPage.Location = new System.Drawing.Point(4, 23);
-			this.Pad3TabPage.Name = "Pad3TabPage";
-			this.Pad3TabPage.Size = new System.Drawing.Size(790, 593);
-			this.Pad3TabPage.TabIndex = 0;
-			this.Pad3TabPage.Text = "PAD 3";
-			// 
-			// Pad4TabPage
-			// 
-			this.Pad4TabPage.ImageKey = "bullet_square_glass_grey.png";
-			this.Pad4TabPage.Location = new System.Drawing.Point(4, 23);
-			this.Pad4TabPage.Name = "Pad4TabPage";
-			this.Pad4TabPage.Size = new System.Drawing.Size(790, 593);
-			this.Pad4TabPage.TabIndex = 0;
-			this.Pad4TabPage.Text = "PAD 4";
 			// 
 			// OptionsTabPage
 			// 
@@ -638,10 +594,6 @@ namespace x360ce.App
 
 		TabPage AboutTabPage;
 		StatusStrip MainStatusStrip;
-		TabPage Pad1TabPage;
-		TabPage Pad2TabPage;
-		TabPage Pad3TabPage;
-		TabPage Pad4TabPage;
 		ImageList BuletImageList;
 		public ToolStripStatusLabel StatusTimerLabel;
 		ToolStripStatusLabel StatusEventsLabel;

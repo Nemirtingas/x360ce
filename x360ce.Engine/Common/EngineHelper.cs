@@ -17,6 +17,8 @@ namespace x360ce.Engine
 {
 	public partial class EngineHelper
 	{
+		public const int GamepadMaxCount = 16;
+
 		#region Manipulate XInput DLL
 
 		public static string AppDataPath

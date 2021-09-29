@@ -438,6 +438,26 @@ namespace x360ce.App
 		#endregion // Member Variables
 
 		#region Public Methods
+
+		static public void AddMap(string sectionName, string keyName, string desc, string dval, Control control)
+		{
+			// Display help inside yellow header.
+			// We could add settings EnableHelpTooltips=1, EnableHelpHeader=1
+			control.MouseHover += control_MouseEnter;
+			control.MouseLeave += control_MouseLeave;
+			var item = new SettingsMapItem();
+			item.Description = desc;
+			//item.IniSection = sectionName;
+			//item.MapTo = mapTo;
+			//item.IniKey = keyName;
+			item.Control = control;
+			item.PropertyName = keyName;
+			item.DefaultValue = dval;
+			item.Property = null;
+			// Add to the map
+			Current.SettingsMap.Add(item);
+		}
+
 		/// <summary>
 		/// Adds an entry in the control-setting map, generates a tool-tip for the setting.
 		/// </summary>
@@ -920,7 +940,7 @@ namespace x360ce.App
 		public bool ContainsInstanceSectionOld(Guid instanceGuid, string iniFileName, out string sectionName)
 		{
 			var ini2 = new Ini(iniFileName);
-			for (int i = 1; i <= 4; i++)
+			for (int i = 1; i <= EngineHelper.GamepadMaxCount; i++)
 			{
 				var section = string.Format("PAD{0}", i);
 				var v = ini2.GetValue(section, "InstanceGUID");

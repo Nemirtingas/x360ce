@@ -25,7 +25,7 @@ namespace x360ce.App.DInput
 			Exception error = null;
 			lock (Controller.XInputLock)
 			{
-				for (uint i = 0; i < 4; i++)
+				for (uint i = 0; i < EngineHelper.GamepadMaxCount; i++)
 				{
 					var gamePad = LiveXiControllers[i];
 					State state = new State();

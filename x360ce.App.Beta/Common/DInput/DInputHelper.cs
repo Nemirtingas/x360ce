@@ -3,6 +3,7 @@ using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
 using System.Threading;
+using x360ce.Engine;
 
 namespace x360ce.App.DInput
 {
@@ -11,12 +12,12 @@ namespace x360ce.App.DInput
 
 		public DInputHelper()
 		{
-			CombinedXiConencted = new bool[4];
-			CombinedXiStates = new State[4];
-			LiveXiControllers = new Controller[4];
-			LiveXiConnected = new bool[4];
-			LiveXiStates = new State[4];
-			for (int i = 0; i < 4; i++)
+			CombinedXiConencted = new bool[EngineHelper.GamepadMaxCount];
+			CombinedXiStates = new State[EngineHelper.GamepadMaxCount];
+			LiveXiControllers = new Controller[EngineHelper.GamepadMaxCount];
+			LiveXiConnected = new bool[EngineHelper.GamepadMaxCount];
+			LiveXiStates = new State[EngineHelper.GamepadMaxCount];
+			for (int i = 0; i < EngineHelper.GamepadMaxCount; i++)
 			{
 				CombinedXiStates[i] = new State();
 				LiveXiControllers[i] = new Controller((UserIndex)i);

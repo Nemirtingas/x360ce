@@ -9,6 +9,7 @@ using x360ce.App;
 using x360ce.App.DInput;
 using x360ce.App.Issues;
 using System.Linq;
+using x360ce.Engine;
 
 namespace Nefarius.ViGEm.Client
 {
@@ -52,8 +53,8 @@ namespace Nefarius.ViGEm.Client
 
 
 		public Xbox360Controller[] Targets;
-		public Targets.Xbox360.Xbox360FeedbackReceivedEventArgs[] Feedbacks = new Targets.Xbox360.Xbox360FeedbackReceivedEventArgs[4];
-		public bool[] connected = new bool[4];
+		public Targets.Xbox360.Xbox360FeedbackReceivedEventArgs[] Feedbacks = new Targets.Xbox360.Xbox360FeedbackReceivedEventArgs[EngineHelper.GamepadMaxCount];
+		public bool[] connected = new bool[EngineHelper.GamepadMaxCount];
 
 		public bool isControllerExists(uint userIndex)
 		{
@@ -88,7 +89,7 @@ namespace Nefarius.ViGEm.Client
 			try
 			{
 				// In order to assign virtual device at specific XInput position, must connect all devices with lower position first.
-				var tempDevices = new bool[4];
+				var tempDevices = new bool[EngineHelper.GamepadMaxCount];
 				for (int i = 0; i < userIndex - 1; i++)
 				{
 					if (!connected[i])
@@ -101,7 +102,7 @@ namespace Nefarius.ViGEm.Client
 				t[userIndex - 1].Connect();
 				connected[userIndex - 1] = true;
 				// Disconnect temporary connected devices.
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < EngineHelper.GamepadMaxCount; i++)
 				{
 					if (tempDevices[i])
 						t[i].Disconnect();
@@ -117,7 +118,7 @@ namespace Nefarius.ViGEm.Client
 
 		public void UnplugAllControllers()
 		{
-			for (uint i = 1; i <= 4; i++)
+			for (uint i = 1; i <= EngineHelper.GamepadMaxCount; i++)
 			{
 				// Unplug device if connected.
 				if (IsControllerConnected(i))

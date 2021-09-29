@@ -12,7 +12,6 @@ namespace x360ce.App.DInput
 {
 	public partial class DInputHelper
 	{
-
 		/// <summary>
 		/// Enable or disable virtual controllers depending on game settings.
 		/// </summary>
@@ -38,15 +37,15 @@ namespace x360ce.App.DInput
 			var client = ViGEmClient.Current;
 			if (client.Targets == null)
 			{
-				client.Targets = new Xbox360Controller[4];
-				for (int i = 0; i < 4; i++)
+				client.Targets = new Xbox360Controller[EngineHelper.GamepadMaxCount];
+				for (int i = 0; i < EngineHelper.GamepadMaxCount; i++)
 				{
 					var controller = new Xbox360Controller(client);
 					client.Targets[i] = controller;
 					controller.FeedbackReceived += Controller_FeedbackReceived;
 				}
 			}
-			for (uint i = 1; i <= 4; i++)
+			for (uint i = 1; i <= EngineHelper.GamepadMaxCount; i++)
 			{
 				var mapTo = (MapTo)i;
 				var flag = AppHelper.GetMapFlag(mapTo);
@@ -87,9 +86,9 @@ namespace x360ce.App.DInput
 			{
 				var client = ViGEmClient.Current;
 				if (client == null)
-					return new Xbox360FeedbackReceivedEventArgs[4];
+					return new Xbox360FeedbackReceivedEventArgs[EngineHelper.GamepadMaxCount];
 				var list = client.Feedbacks.ToArray();
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < EngineHelper.GamepadMaxCount; i++)
 				{
 					client.Feedbacks[i] = null;
 				}
@@ -111,7 +110,7 @@ namespace x360ce.App.DInput
 			lock (FeedbackLock)
 			{
 				var controller = (Xbox360Controller)sender;
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < EngineHelper.GamepadMaxCount; i++)
 				{
 					if (ViGEmClient.Current.Targets[i] == controller)
 					{
@@ -123,9 +122,9 @@ namespace x360ce.App.DInput
 			}
 		}
 
-		bool?[] FeedingState = new bool?[4];
+		bool?[] FeedingState = new bool?[EngineHelper.GamepadMaxCount];
 
-		Gamepad[] oldGamepadStates = new Gamepad[4];
+		Gamepad[] oldGamepadStates = new Gamepad[EngineHelper.GamepadMaxCount];
 
 		bool IsGuideDown;
 		object guideLock = new object();
@@ -178,12 +177,12 @@ namespace x360ce.App.DInput
 						var isGuidePressed = n.Buttons.HasFlag(GamepadButtonFlags.Guide);
 						if (isGuidePressed && !IsGuideDown)
 						{
-							JocysCom.ClassLibrary.Processes.KeyboardHelper.SendDown(Keys.LWin, Keys.G);
+							//JocysCom.ClassLibrary.Processes.KeyboardHelper.SendDown(Keys.LWin, Keys.G);
 							IsGuideDown = true;
 						}
 						if (!isGuidePressed && IsGuideDown)
 						{
-							JocysCom.ClassLibrary.Processes.KeyboardHelper.SendUp(Keys.LWin, Keys.G);
+							//JocysCom.ClassLibrary.Processes.KeyboardHelper.SendUp(Keys.LWin, Keys.G);
 							IsGuideDown = false;
 						}
 					}
@@ -213,7 +212,7 @@ namespace x360ce.App.DInput
 
 		public VirtualError EnableFeeding(uint userIndex)
 		{
-			if (userIndex < 1 || userIndex > 4)
+			if (userIndex < 1 || userIndex > EngineHelper.GamepadMaxCount)
 				return VirtualError.Index;
 			if (!ViGEmClient.isVBusExists(true))
 				return VirtualError.Missing;
@@ -230,7 +229,7 @@ namespace x360ce.App.DInput
 		public VirtualError DisableFeeding(uint userIndex)
 		{
 			bool success;
-			if (userIndex < 1 || userIndex > 4)
+			if (userIndex < 1 || userIndex > EngineHelper.GamepadMaxCount)
 				return VirtualError.Index;
 			if (!ViGEmClient.isVBusExists(false))
 				return VirtualError.Missing;
